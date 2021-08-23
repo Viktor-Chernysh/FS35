@@ -124,10 +124,11 @@ let currentPage = 1
 
 const gitHanlerSubmit = (e) => {
   e.preventDefault()
+  refs.container.innerHTML=''
   const value = refs.input.value;
   axios.get(`https://api.github.com/search/users?q=${value}&client_id=67684cabc84f94f0938e&client_secret=782ea639550c1b5d986bdd8129813652ed04c92c&page=${currentPage}`)
   .then(result => renderGitCollection(result.data.items))
-  .then(() => currentPage++)
+    .then(() => { if (e === 'click') { currentPage++ }})
   .catch((err) => console.log(err))
 }
 
@@ -141,10 +142,11 @@ function createItem ({strDrinkThumb, strDrink}) {
 refs.container.insertAdjacentHTML('beforeend', article)
 }
 
-function createGitItem ({avatar_url, login}) {
+function createGitItem ({avatar_url, login, html_url}) {
   const article = `<article>
     <img src='${avatar_url}' alt='${login}'/>
     <p>${login}</p>
+   <a href='${html_url}' target="_blank">${html_url}</a>
   </article>
 `
 refs.container.insertAdjacentHTML('beforeend', article)
